@@ -2,7 +2,7 @@
   <div>
     <h1>Список заметок</h1>
     <v-list>
-      <v-list-item v-for="note in notes" :key="note.id">
+      <v-list-item v-for="note in notes" :key="note.id" class="pa-0">
         <v-list-item-content>
           <nuxt-link :to="`/note/${note.id}`">{{ note.title }}</nuxt-link>
         </v-list-item-content>

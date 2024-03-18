@@ -1,10 +1,20 @@
 <template>
   <div>
     <h1>Создать новую заметку</h1>
-    <v-form @submit.prevent="createNote">
-      <v-text-field v-model="title" label="Заголовок" required></v-text-field>
-      <v-textarea v-model="content" label="Содержание" required></v-textarea>
-      <v-btn type="submit" :disabled="!validForm">Создать</v-btn>
+    <v-form ref="form" @submit.prevent="createNote">
+      <v-text-field
+        v-model="title"
+        label="Заголовок"
+        required
+        :rules="titleRules"
+      ></v-text-field>
+      <v-textarea
+        v-model="content"
+        label="Содержание"
+        required
+        :rules="contentRules"
+      ></v-textarea>
+      <v-btn type="submit">Создать</v-btn>
     </v-form>
   </div>
 </template>
@@ -15,22 +25,30 @@ export default {
     return {
       title: "",
       content: "",
+      titleRules: [
+        (v) => !!v || "Заголовок является обязательным полем",
+        (v) =>
+          (v && v.length >= 5) ||
+          "Заголовок должен содержать минимум 5 символов",
+      ],
+      contentRules: [
+        (v) => !!v || "Содержание является обязательным полем",
+        (v) =>
+          (v && v.length >= 10) ||
+          "Содержание должно содержать минимум 10 символов",
+      ],
     };
-  },
-  computed: {
-    validForm() {
-      return this.title && this.content;
-    },
   },
   methods: {
     createNote() {
+      if (!this.$refs.form.validate()) return;
+
+      let id = Date.now();
       this.$store.commit("addNote", {
-        id: Date.now(),
+        id,
         title: this.title,
         content: this.content,
       });
-      this.title = "";
-      this.content = "";
       this.$router.push("/");
     },
   },
