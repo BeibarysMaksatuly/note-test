@@ -14,7 +14,7 @@
         required
         :rules="contentRules"
       ></v-textarea>
-      <v-btn type="submit">Создать</v-btn>
+      <v-btn type="submit" class="mt-4">Создать</v-btn>
     </v-form>
   </div>
 </template>
